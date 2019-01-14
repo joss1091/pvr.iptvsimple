@@ -49,6 +49,7 @@
 #define CHANNEL_LOGO_EXTENSION  ".png"
 #define SECONDS_IN_DAY          86400
 #define GENRES_MAP_FILENAME     "genres.xml"
+#define NO_SUBSCRIPTION "no_subscription"
 
 using namespace ADDON;
 using namespace rapidxml;
@@ -357,6 +358,11 @@ bool PVRIptvData::LoadPlayList(void)
       {
         double fTvgShift = atof(ReadMarkerValue(strLine, TVG_INFO_SHIFT_MARKER).c_str());
         iEPGTimeShift = (int) (fTvgShift * 3600.0);
+        continue;
+      }
+      if (StringUtils::Left(strLine, (int)strlen(NO_SUBSCRIPTION)) == NO_SUBSCRIPTION)
+      {
+        XBMC->QueueNotification(QUEUE_INFO, "No cuentas con una subscripcion");
         continue;
       }
       else
